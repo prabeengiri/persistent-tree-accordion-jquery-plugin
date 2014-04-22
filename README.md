@@ -56,14 +56,15 @@ $(document).ready(function() {
 ```
 
 ## API:
-<pre>
- FolderClick(event, el)
+ **FolderClick(event, el)**
+ 
  Triggered when "folder" (list which have folder class) is clicked
- +event 
-   DOM event Object.
- +el
-   Anchor Tag which parent li has 'folder' class.
-</pre>
+<pre>
+event
+  DOM event Object.
+el
+  Anchor Tag which parent li has 'folder' class.
+</pre>     
 ```javascript
 $(".accordion_report_tree").FolderTreeAccordion({
   folderClick : function (event, el) {
@@ -76,13 +77,15 @@ $(".accordion_report_tree").bind("FolderTreeAccordion.onFolderClick", function(e
 });
 ```
 
-FileClick(event, el)
-Triggered when "file" (list which does not have folder class) is clicked
+**FileClick(event, el)**
 
-+event 
+Triggered when "file" (list which does not have folder class) is clicked
+<pre>
+event 
   DOM event Object.
-+el
+el
   Anchor Tag hich parent li does not have 'folder' class.
+</pre>
 ```javascript
 $(".accordion_report_tree").FolderTreeAccordion({
   fileClick : function (event, el) {
