@@ -5,7 +5,10 @@ This is simple JQuery Plugin which creates the persistent accordion on HTML Tree
 
 This works same way as other folder tree plugin works but its behaviour is persistent. 
 However, it does not use images and css. It has the "useCookie" option which will enable
-the persistent behaviour. 
+the persistent behaviour.
+
+If list is treated as folder then, it needs to have folder class unless any other provided in 
+the settings. 
 
 
 HTML Structure
@@ -34,6 +37,7 @@ Usage:
 $(document).ready(function() { 
   $(".accordion_report_tree").FolderTreeAccordion({
    useCookie: true,
+   folderClass: 'folder',
    folderClick : function (event, el) {
      alert('folerElementClicked');
    },
@@ -48,6 +52,40 @@ $(document).ready(function() {
 });
 
 API:
+FolderClick(event, el)
+Triggered when "folder" (list which have folder class) is clicked
+
+event 
+  DOM event Object.
+el
+  Anchor Tag which parent li has 'folder' class.
+  
+$(".accordion_report_tree").FolderTreeAccordion({
+  folderClick : function (event, el) {
+     alert('folderElementClicked');
+  },
+});
+
+$(".accordion_report_tree").bind("FolderTreeAccordion.onFolderClick", function(event, el) {
+});
+
+
+FileClick(event, el)
+Triggered when "file" (list which does not have folder class) is clicked
+
+event 
+  DOM event Object.
+el
+  Anchor Tag hich parent li does not have 'folder' class.
+
+$(".accordion_report_tree").FolderTreeAccordion({
+  fileClick : function (event, el) {
+     alert('fileElementClicked');
+  },
+});
+
+$(".accordion_report_tree").bind("FolderTreeAccordion.onFileClick", function(event, el) {
+});
 
 
 
