@@ -1,5 +1,5 @@
 /**
- * jQuery FolderTreeAccordion 0.1
+ * jQuery PersistentFolderTreeAccordion 0.1
  * 
  * CopyRight 2014 Prabin Giri
  *  
@@ -7,6 +7,7 @@
  *   https://github.com/prabeengiri/Persistent-Folder-Tree-Accordion/archive/master.zip
  * Depends:
  *   jQuery.js
+ *   https://github.com/carhartl/jquery-cookie
  * 
  * This Javacsript creates the clickable accordion with Javascript that
  * opens/and closes the lists. Its basically designed for the folder tree.
