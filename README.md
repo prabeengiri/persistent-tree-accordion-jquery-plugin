@@ -12,7 +12,7 @@ the settings.
 
 
 HTML Structure
-<pre>
+```html
 <div class="foldertree">
    <ul id='report_tree' class='accordion_report_tree'>
      <li class='folder'><a href="javascript:;">David CEO</a>
@@ -33,9 +33,10 @@ HTML Structure
      </li>
    </ul>
 </div>
-</pre>
+```
 
 Usage:
+```javascript
 $(document).ready(function() { 
   $(".accordion_report_tree").FolderTreeAccordion({
    useCookie: true,
@@ -52,25 +53,26 @@ $(document).ready(function() {
     alert('fileClicked');
   })
 });
+```
 
 API:
 FolderClick(event, el)
 Triggered when "folder" (list which have folder class) is clicked
-
 event 
   DOM event Object.
 el
   Anchor Tag which parent li has 'folder' class.
-  
+```javascript
 $(".accordion_report_tree").FolderTreeAccordion({
   folderClick : function (event, el) {
      alert('folderElementClicked');
   },
 });
 
+
 $(".accordion_report_tree").bind("FolderTreeAccordion.onFolderClick", function(event, el) {
 });
-
+```
 
 FileClick(event, el)
 Triggered when "file" (list which does not have folder class) is clicked
@@ -79,7 +81,7 @@ event
   DOM event Object.
 el
   Anchor Tag hich parent li does not have 'folder' class.
-
+```javascript
 $(".accordion_report_tree").FolderTreeAccordion({
   fileClick : function (event, el) {
      alert('fileElementClicked');
@@ -88,7 +90,7 @@ $(".accordion_report_tree").FolderTreeAccordion({
 
 $(".accordion_report_tree").bind("FolderTreeAccordion.onFileClick", function(event, el) {
 });
-
+```
 
 
 Important: 
