@@ -11,7 +11,8 @@ If list is treated as folder then, it needs to have folder class unless any othe
 the settings. 
 
 
-HTML Structure
+## HTML Structure:
+```html
 <div class="foldertree">
    <ul id='report_tree' class='accordion_report_tree'>
      <li class='folder'><a href="javascript:;">David CEO</a>
@@ -32,8 +33,10 @@ HTML Structure
      </li>
    </ul>
 </div>
+```
 
-Usage:
+## Usage:
+```javascript
 $(document).ready(function() { 
   $(".accordion_report_tree").FolderTreeAccordion({
    useCookie: true,
@@ -50,45 +53,52 @@ $(document).ready(function() {
     alert('fileClicked');
   })
 });
+```
 
-API:
-FolderClick(event, el)
-Triggered when "folder" (list which have folder class) is clicked
-
-event 
+## API:
+ **FolderClick(event, el)**
+ 
+ Triggered when "folder" (list which have folder class) is clicked
+<pre>
+event
   DOM event Object.
 el
   Anchor Tag which parent li has 'folder' class.
-  
+</pre>     
+```javascript
 $(".accordion_report_tree").FolderTreeAccordion({
   folderClick : function (event, el) {
      alert('folderElementClicked');
   },
 });
 
+// Bind Folderclick Event.
 $(".accordion_report_tree").bind("FolderTreeAccordion.onFolderClick", function(event, el) {
 });
+```
 
+**FileClick(event, el)**
 
-FileClick(event, el)
 Triggered when "file" (list which does not have folder class) is clicked
-
+<pre>
 event 
   DOM event Object.
 el
   Anchor Tag hich parent li does not have 'folder' class.
-
+</pre>
+```javascript
 $(".accordion_report_tree").FolderTreeAccordion({
   fileClick : function (event, el) {
      alert('fileElementClicked');
   },
 });
 
+// Bind FileClick Event
 $(".accordion_report_tree").bind("FolderTreeAccordion.onFileClick", function(event, el) {
 });
+```
 
 
-
-Important: 
+## Important: 
 If you using persistent/cookie behaviour then, css selector ul/ol need to have id attribute. 
 
