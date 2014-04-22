@@ -12,6 +12,7 @@ the settings.
 
 
 HTML Structure
+<pre>
 <div class="foldertree">
    <ul id='report_tree' class='accordion_report_tree'>
      <li class='folder'><a href="javascript:;">David CEO</a>
@@ -32,6 +33,7 @@ HTML Structure
      </li>
    </ul>
 </div>
+</pre>
 
 Usage:
 $(document).ready(function() { 
