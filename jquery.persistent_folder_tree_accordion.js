@@ -7,7 +7,6 @@
  *   https://github.com/prabeengiri/Persistent-Folder-Tree-Accordion/archive/master.zip
  * Depends:
  *   jQuery.js
- *   https://github.com/carhartl/jquery-cookie
  * 
  * This Javacsript creates the clickable accordion with Javascript that
  * opens/and closes the lists. Its basically designed for the folder tree.
@@ -32,7 +31,9 @@
       toggleAll : true,
       folderClick: function (event, a) {},
       fileClick : function (event, a) {},
-      folderClass: 'folder'
+      folderClass: 'folder',
+      // Anchor tag inside the file list on which click event is attached.
+      fileLinkClass : null,
     },
     
     /***
@@ -51,16 +52,23 @@
       }
       
       // Attach folder click event.
-      this.list.on('click', "li." + this.settings.folderClass + " a", function (event) {
+      this.list.find("li." + this.settings.folderClass + " a").click(function (event) {
         return function ($a) {
           self.folderClick(event, $a);
         }($(this));
       });
       
       // Attach File Click Event.
-      this.list.on('click', "li:not('." + this.settings.folderClass + "') a", function (event) {
+      // Some anchor tag might have sibling anchor tag, in that case we dont want to assign
+      // on all the anchor tags in the list.
+      var anchorTagSelectors = this.list.find("li:not('." + this.settings.folderClass + "') a");
+      if (this.settings.fileLinkClass != null) {
+        anchorTagSelectors = this.list.find("li:not('." + this.settings.folderClass + "') a." + this.settings.fileLinkClass);
+      } 
+      anchorTagSelectors.click(function (event) {
         self.fileClick(event, $(this));
       });
+      
     },
     
     /**
@@ -84,7 +92,7 @@
      * @param event
      *   DOM event object.
      * @param $a
-     *   JQuery Anchor Tag Object thats being clicked.
+     *   JQuery Anchor Tag Object thats being clicked
      */
     folderClick : function(event, $a) {
       var $li = $a.parent('li');
