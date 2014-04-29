@@ -19,8 +19,30 @@
   // Constuctor Function.
   var FolderTreeAccordion = function ($listElement, options, $) {
     this.list = $listElement;
+    this.isCookiePresent = false;
     this.settings = $.extend({}, this.defaults, options);
     this.init();
+    
+    var self = this;
+    
+    
+    // Attach folder click event.
+    this.list.find("li." + this.settings.folderClass + " a").click(function (event) {
+      return function ($a) {
+        self.folderClick(event, $a);
+      }($(this));
+    });
+    
+    // Attach File Click Event.
+    // Some anchor tag might have sibling anchor tag, in that case we dont want to assign
+    // on all the anchor tags in the list.
+    var anchorTagSelectors = this.list.find("li:not('." + this.settings.folderClass + "') a");
+    if (this.settings.fileLinkClass != null) {
+      anchorTagSelectors = this.list.find("li:not('." + this.settings.folderClass + "') a." + this.settings.fileLinkClass);
+    } 
+    anchorTagSelectors.click(function (event) {
+      self.fileClick(event, $(this));
+    });
   }; 
   
   FolderTreeAccordion.prototype = {
@@ -34,6 +56,7 @@
       folderClass: 'folder',
       // Anchor tag inside the file list on which click event is attached.
       fileLinkClass : null,
+      emptyText : "No data found."
     },
     
     /***
@@ -42,7 +65,10 @@
      * list items. 
      */
     init: function () {
-      var self = this;
+      
+      if (this.list.size() == 0 || this.list.children().size() == 0) {
+        this.list.replaceWith("<div>" + this.settings.emptyText + "</div>");
+      }
       
       if (this.settings.useCookie) {
         if (this.list.attr('id') == undefined || this.list.attr('id') == "") {
@@ -50,25 +76,11 @@
         }
         this.persistBehaviour();
       }
-      
-      // Attach folder click event.
-      this.list.find("li." + this.settings.folderClass + " a").click(function (event) {
-        return function ($a) {
-          self.folderClick(event, $a);
-        }($(this));
-      });
-      
-      // Attach File Click Event.
-      // Some anchor tag might have sibling anchor tag, in that case we dont want to assign
-      // on all the anchor tags in the list.
-      var anchorTagSelectors = this.list.find("li:not('." + this.settings.folderClass + "') a");
-      if (this.settings.fileLinkClass != null) {
-        anchorTagSelectors = this.list.find("li:not('." + this.settings.folderClass + "') a." + this.settings.fileLinkClass);
-      } 
-      anchorTagSelectors.click(function (event) {
-        self.fileClick(event, $(this));
-      });
-      
+    
+      // If cookie is not used or cookie is used but using for the first time.
+      if (!this.settings.useCookie || !this.cookieExists()) {
+        this.defaultBehaviour();
+      };
     },
     
     /**
@@ -139,15 +151,64 @@
      * accordingly.
      */
     persistBehaviour : function() {
+      var self = this;
       if(this.settings.useCookie) {
         this.addIds();
         this.list.find('li.' + this.settings.folderClass)
-        .each(function(i){
-          if ($.cookie( $(this).attr('id')) == '1')
-            $(this).addClass('expanded').children('ul,ol').show();
-          else if ($.cookie( $(this).attr('id')) == '0')
-            $(this).children('ul,ol').hide();
+         .each(function(i){
+          if ($.cookie( $(this).attr('id')) == '1') {
+            self.expandFolder($(this));
+            self.isCookiePresent = true;
+          } else if ($.cookie( $(this).attr('id')) == '0') {
+            self.isCookiePresent = true;
+            self.collapseFolder($(this));
+          } else {
+            self.collapseFolder($(this));
+          } 
         }); 
+      };
+      
+    },
+    
+    expandFolder : function (el) {
+      el.addClass('expanded').children('ul,ol').show();
+    },
+    
+    collapseFolder: function(el) {
+      el.children('ul,ol').hide();
+    },
+    
+    /**
+     * Check if there is any cookie info
+     * To verify if user is visiting for the 
+     * first time.
+     */ 
+    cookieExists: function() {
+      if (!this.settings.useCookie) 
+        return false;
+      return this.isCookiePresent;
+    },
+    
+    
+    /**
+     * Default behaviour that opens first sets of matche folders.
+     * 
+     * Open inner most folder of first folder if there is nothing set in the cookie.
+     * This is used if there is no any information in the cookie,
+     * and also 'useCookie' attribute is set to 'false'. 
+     */
+    defaultBehaviour: function () {
+      var self = this;
+      // Hide all.
+      this.list.find('li').each(function() {
+        self.collapseFolder($(this));
+      });
+      
+      var list = this.list; 
+      var firstFolderChildren = list.children('li:first');
+      while(firstFolderChildren.hasClass('folder')) {
+        this.expandFolder(firstFolderChildren);
+        firstFolderChildren = firstFolderChildren.children('ul').children('li:first');
       }
     },
     
