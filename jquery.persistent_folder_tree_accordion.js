@@ -25,7 +25,6 @@
     
     var self = this;
     
-    
     // Attach folder click event.
     this.list.find("li." + this.settings.folderClass + " a").click(function (event) {
       return function ($a) {
